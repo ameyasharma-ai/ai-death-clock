@@ -1,0 +1,38 @@
+# Secrets and Environment
+.env
+.env.local
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+.venv/
+venv/
+ENV/
+
+# System / IDE
+.DS_Store
+.idea/
+.vscode/
+
+# Local deb / unpacked libraries (downloaded via apt-get)
+*.deb

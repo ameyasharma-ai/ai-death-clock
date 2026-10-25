@@ -1,0 +1,48 @@
+{
+  "profile": {
+    "birth_date": "2005-12-19",
+    "biological_sex": "Male",
+    "country": "India",
+    "city": "Patna",
+    "living_area": "Urban",
+    "air_quality": "Moderate Urban",
+    "sleep_hours": 7.0,
+    "sleep_quality": "Moderate",
+    "exercise_frequency": "Light (1-2x per week)",
+    "diet_type": "Balanced Home-cooked (Whole foods)",
+    "smoking_status": "Non-smoker (Never smoked)",
+    "alcohol_units_per_week": 0,
+    "caffeine_daily_cups": 0,
+    "stress_level": 5,
+    "work_nature": "Desk / Sedentary (Software / Office)",
+    "social_connection": "Strong Family & Lifelong Friends (Tight tribe)",
+    "sense_of_purpose": "High / Clear Life Mission & Passion (Ikigai)",
+    "family_longevity": "Exceptional (Parents/Grandparents lived 85+)",
+    "chronic_conditions": "None"
+  },
+  "estimate": {
+    "estimated_lifespan_years": 85.2,
+    "estimated_death_date": "2091-03-02T03:51:50.400000+00:00",
+    "baseline_country_expectancy": 70.5,
+    "net_lifestyle_modifier_years": 14.7,
+    "summary": "The subject exhibits a robust longevity profile characterized by exceptional genetic resilience and strong psychosocial support systems. While urban environmental factors and sedentary work habits present moderate headwinds, the subject's adherence to a whole-food diet and absence of substance use place them in the top decile of their demographic cohort.",
+    "top_boosters": [
+      "Exceptional genetic longevity history (+6.5 yrs)",
+      "Strong social cohesion and Ikigai (+4.2 yrs)",
+      "Non-smoker and zero alcohol consumption (+3.5 yrs)",
+      "Balanced whole-food nutrition (+2.5 yrs)"
+    ],
+    "top_risks": [
+      "Sedentary desk-bound occupation (-1.2 yrs)",
+      "Moderate urban air quality/PM2.5 exposure (-0.8 yrs)"
+    ],
+    "longevity_recommendations": [
+      "Implement a structured 150-minute weekly Zone 2 aerobic training regimen to counteract sedentary risks.",
+      "Utilize high-efficiency particulate air (HEPA) filtration in the primary living and sleeping quarters.",
+      "Incorporate 'movement snacks' or standing desk intervals every 60 minutes to mitigate metabolic stagnation.",
+      "Optimize sleep hygiene to transition from 7.0 hours of moderate quality to 7.5-8.0 hours of restorative sleep."
+    ]
+  },
+  "created_at": "2026-10-25T08:08:25.040897+00:00",
+  "updated_at": "2026-10-25T08:08:25.040954+00:00"
+}
