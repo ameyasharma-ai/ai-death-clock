@@ -12,5 +12,17 @@ if [ -d "$LIB_DIR" ]; then
 fi
 
 export DISPLAY="${DISPLAY:-:0.0}"
+export XAUTHORITY="${XAUTHORITY:-$HOME/.Xauthority}"
+
+# If started early by systemd at boot, wait briefly for X11 to accept connections
+RETRIES=0
+while ! xset q >/dev/null 2>&1; do
+    sleep 1
+    RETRIES=$((RETRIES + 1))
+    if [ "$RETRIES" -ge 20 ]; then
+        echo "Notice: X11 DISPLAY $DISPLAY not ready after 20s, attempting start anyway..."
+        break
+    fi
+done
 
 exec "$SCRIPT_DIR/.venv/bin/python" "$SCRIPT_DIR/main.py" "$@"
