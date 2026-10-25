@@ -60,6 +60,23 @@ class UserProfile:
     sense_of_purpose: str = "High / Clear Life Mission (Ikigai)"
     family_longevity: str = "Exceptional (85+ years)"
     chronic_conditions: str = "None"
+    personal_notes: str = ""
+    custom_fields: dict[str, str] = field(default_factory=dict)
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> UserProfile:
+        """Safely construct UserProfile ignoring obsolete or extra fields.
+
+        Args:
+            data: Raw dictionary from serialized storage.
+
+        Returns:
+            UserProfile: Validated dataclass instance.
+        """
+        from dataclasses import fields
+        valid_fields = {f.name for f in fields(cls)}
+        filtered = {k: v for k, v in data.items() if k in valid_fields}
+        return cls(**filtered)
 
 
 @dataclass
@@ -180,7 +197,7 @@ class SavedState:
         Returns:
             SavedState: Hydrated state object.
         """
-        profile = UserProfile(**data["profile"])
+        profile = UserProfile.from_dict(data["profile"])
         estimate = LifespanEstimate(**data["estimate"])
         return cls(
             profile=profile,

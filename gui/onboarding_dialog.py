@@ -22,9 +22,11 @@ from PyQt6.QtWidgets import (
     QMessageBox,
     QProgressBar,
     QPushButton,
+    QScrollArea,
     QSlider,
     QSpinBox,
     QTabWidget,
+    QTextEdit,
     QVBoxLayout,
     QWidget,
 )
@@ -98,9 +100,10 @@ class OnboardingDialog(QDialog):
         self.gemini_engine = GeminiEngine()
         self.worker_thread: QThread | None = None
         self.worker: GeminiWorker | None = None
+        self.custom_fields_entries: list[tuple[QWidget, QLineEdit, QLineEdit]] = []
 
         self.setWindowTitle("AI Death Clock — Life & Geography Assessment")
-        self.setMinimumSize(720, 580)
+        self.setMinimumSize(820, 620)
         self.setStyleSheet(DIALOG_STYLE)
 
         self._build_ui()
@@ -118,7 +121,7 @@ class OnboardingDialog(QDialog):
         title = QLabel("AI Lifespan & Longevity Assessment")
         title.setStyleSheet(f"font-size: 22px; font-weight: 800; color: {TEXT_PRIMARY};")
         subtitle = QLabel(
-            "Powered by Google Gemini. Provide your life details, geography, and habits "
+            "Powered by Google Gemini. Provide your life details, geography, habits, and any custom personal information "
             "to estimate your life expectancy and progress."
         )
         subtitle.setWordWrap(True)
@@ -133,6 +136,7 @@ class OnboardingDialog(QDialog):
         self.tabs.addTab(self._create_lifestyle_tab(), "2. Habits")
         self.tabs.addTab(self._create_health_tab(), "3. Health")
         self.tabs.addTab(self._create_mind_tab(), "4. Mind & Tribe")
+        self.tabs.addTab(self._create_custom_tab(), "5. Custom & Personal")
         main_layout.addWidget(self.tabs)
 
         # Status and Progress Bar
@@ -352,6 +356,130 @@ class OnboardingDialog(QDialog):
 
         return page
 
+    def _create_custom_tab(self) -> QWidget:
+        """Create tab for custom attributes, biomarkers, and free-form personal context.
+
+        Returns:
+            QWidget: Configured custom factors tab.
+        """
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        container = QWidget()
+        layout = QVBoxLayout(container)
+        layout.setSpacing(16)
+        layout.setContentsMargins(10, 14, 10, 10)
+
+        # 1. Quick Longevity Factors Group
+        quick_group = QGroupBox("Key Longevity Stack & Biomarkers")
+        quick_layout = QFormLayout(quick_group)
+        quick_layout.setSpacing(12)
+
+        self.input_custom_fasting = QLineEdit()
+        self.input_custom_fasting.setPlaceholderText("e.g. 16:8 intermittent fasting, 24h fast monthly, None")
+        quick_layout.addRow("Fasting Protocol:", self.input_custom_fasting)
+
+        self.input_custom_supplements = QLineEdit()
+        self.input_custom_supplements.setPlaceholderText("e.g. Creatine 5g, Vitamin D3+K2, Omega-3, NMN, Metformin")
+        quick_layout.addRow("Supplements & Longevity Stack:", self.input_custom_supplements)
+
+        self.input_custom_biomarkers = QLineEdit()
+        self.input_custom_biomarkers.setPlaceholderText("e.g. Resting HR: 52 bpm, BP: 115/75, VO2 Max: 46")
+        quick_layout.addRow("Biomarkers & Vital Metrics:", self.input_custom_biomarkers)
+
+        layout.addWidget(quick_group)
+
+        # 2. Dynamic Custom Key-Value Attributes Group
+        custom_group = QGroupBox("Additional Custom Attributes")
+        self.custom_group_layout = QVBoxLayout(custom_group)
+        self.custom_group_layout.setSpacing(8)
+
+        desc_lbl = QLabel("Add any custom factors (e.g. Sauna, Cold Plunges, Night Shifts, High Travel):")
+        desc_lbl.setStyleSheet(f"font-size: 11px; color: {TEXT_MUTED};")
+        self.custom_group_layout.addWidget(desc_lbl)
+
+        # Container for dynamic rows
+        self.custom_rows_widget = QWidget()
+        self.custom_rows_layout = QVBoxLayout(self.custom_rows_widget)
+        self.custom_rows_layout.setContentsMargins(0, 0, 0, 0)
+        self.custom_rows_layout.setSpacing(6)
+        self.custom_group_layout.addWidget(self.custom_rows_widget)
+
+        # Button to add new custom field row
+        btn_add_field = QPushButton("+ Add Custom Field")
+        btn_add_field.setStyleSheet(f"background-color: rgba(0, 240, 255, 0.15); border: 1px solid {ACCENT_CYAN}; color: #FFFFFF;")
+        btn_add_field.clicked.connect(lambda: self._add_custom_field_row())
+        self.custom_group_layout.addWidget(btn_add_field)
+
+        layout.addWidget(custom_group)
+
+        # 3. Free-form Personal Notes & Context
+        notes_group = QGroupBox("Personal Life Context & Detailed Narrative")
+        notes_layout = QVBoxLayout(notes_group)
+        notes_layout.setSpacing(8)
+
+        notes_help = QLabel(
+            "Type any personal details, family anecdotes, unique daily routines, psychological nuances, "
+            "or specific life circumstances you want Gemini to analyze:"
+        )
+        notes_help.setWordWrap(True)
+        notes_help.setStyleSheet(f"font-size: 11px; color: {TEXT_MUTED};")
+        notes_layout.addWidget(notes_help)
+
+        self.input_personal_notes = QTextEdit()
+        self.input_personal_notes.setMinimumHeight(120)
+        self.input_personal_notes.setPlaceholderText(
+            "e.g.,\n"
+            "• Maternal grandmother lived to 99 with sharp cognition; father had bypass at 72.\n"
+            "• I practice Wim Hof breathwork and cold exposure 3x a week.\n"
+            "• High stress during Q4 product launches, but take 10-minute mindful walks after lunch.\n"
+            "• Occasional long-distance marathon runner; VO2 max ~52."
+        )
+        notes_layout.addWidget(self.input_personal_notes)
+        layout.addWidget(notes_group)
+
+        layout.addStretch()
+        scroll.setWidget(container)
+        return scroll
+
+    def _add_custom_field_row(self, key_text: str = "", val_text: str = "") -> None:
+        """Add a dynamic custom attribute row with key, value, and delete button.
+
+        Args:
+            key_text: Initial attribute name.
+            val_text: Initial attribute value.
+        """
+        row_widget = QWidget()
+        row_layout = QHBoxLayout(row_widget)
+        row_layout.setContentsMargins(0, 0, 0, 0)
+        row_layout.setSpacing(8)
+
+        key_edit = QLineEdit(key_text)
+        key_edit.setPlaceholderText("Field Name (e.g. Sauna)")
+        key_edit.setFixedWidth(180)
+
+        val_edit = QLineEdit(val_text)
+        val_edit.setPlaceholderText("Value (e.g. 20 min @ 85°C 4x/wk)")
+
+        btn_del = QPushButton("✕")
+        btn_del.setFixedSize(28, 28)
+        btn_del.setStyleSheet("background-color: rgba(255, 46, 99, 0.2); border: 1px solid #FF2E63; color: white;")
+
+        entry = (row_widget, key_edit, val_edit)
+        self.custom_fields_entries.append(entry)
+
+        def remove_row():
+            if entry in self.custom_fields_entries:
+                self.custom_fields_entries.remove(entry)
+            row_widget.deleteLater()
+
+        btn_del.clicked.connect(remove_row)
+
+        row_layout.addWidget(key_edit)
+        row_layout.addWidget(val_edit)
+        row_layout.addWidget(btn_del)
+
+        self.custom_rows_layout.addWidget(row_widget)
+
     def _update_stress_label(self, val: int) -> None:
         """Update stress caption based on slider value.
 
@@ -380,6 +508,17 @@ class OnboardingDialog(QDialog):
         self.input_caffeine.setValue(p.caffeine_daily_cups)
         self.slider_stress.setValue(p.stress_level)
         self.input_conditions.setText(p.chronic_conditions)
+        self.input_personal_notes.setPlainText(p.personal_notes or "")
+
+        if p.custom_fields:
+            self.input_custom_fasting.setText(p.custom_fields.get("Fasting Protocol", ""))
+            self.input_custom_supplements.setText(p.custom_fields.get("Supplements & Longevity Stack", ""))
+            self.input_custom_biomarkers.setText(p.custom_fields.get("Biomarkers & Vital Metrics", ""))
+
+            standard_keys = {"Fasting Protocol", "Supplements & Longevity Stack", "Biomarkers & Vital Metrics"}
+            for k, v in p.custom_fields.items():
+                if k not in standard_keys and str(v).strip():
+                    self._add_custom_field_row(k, str(v))
 
     def _collect_profile(self) -> UserProfile:
         """Extract user inputs into a validated UserProfile instance.
@@ -389,6 +528,23 @@ class OnboardingDialog(QDialog):
         """
         qdate = self.input_birth.date()
         birth_str = f"{qdate.year():04d}-{qdate.month():02d}-{qdate.day():02d}"
+
+        # Collect custom fields
+        custom_fields: dict[str, str] = {}
+        if self.input_custom_fasting.text().strip():
+            custom_fields["Fasting Protocol"] = self.input_custom_fasting.text().strip()
+        if self.input_custom_supplements.text().strip():
+            custom_fields["Supplements & Longevity Stack"] = self.input_custom_supplements.text().strip()
+        if self.input_custom_biomarkers.text().strip():
+            custom_fields["Biomarkers & Vital Metrics"] = self.input_custom_biomarkers.text().strip()
+
+        for _, key_edit, val_edit in self.custom_fields_entries:
+            k = key_edit.text().strip()
+            v = val_edit.text().strip()
+            if k and v:
+                custom_fields[k] = v
+
+        personal_notes = self.input_personal_notes.toPlainText().strip()
 
         return UserProfile(
             birth_date=birth_str,
@@ -410,6 +566,8 @@ class OnboardingDialog(QDialog):
             sense_of_purpose=self.input_purpose.currentText(),
             family_longevity=self.input_family.currentText(),
             chronic_conditions=self.input_conditions.text().strip() or "None",
+            personal_notes=personal_notes,
+            custom_fields=custom_fields,
         )
 
     def _on_submit(self) -> None:

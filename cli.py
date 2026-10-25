@@ -55,6 +55,15 @@ def run_cli_wizard() -> SavedState:
     purpose = prompt_input("17. Sense of Life Purpose / Ikigai (High/Moderate/Searching)", "High / Clear Mission")
     family = prompt_input("18. Family Longevity History (Exceptional 85+/Average 75/Below 70)", "Exceptional (85+)")
     conditions = prompt_input("19. Chronic Health Conditions", "None")
+    fasting = prompt_input("20. Fasting Protocol (e.g. 16:8, None)", "16:8 intermittent fasting")
+    supplements = prompt_input("21. Supplements / Longevity Stack", "Creatine 5g, Vitamin D3+K2, Omega-3")
+    notes = prompt_input("22. Additional Personal Notes / Unique Details", "None provided")
+
+    custom_fields = {}
+    if fasting and fasting != "None":
+        custom_fields["Fasting Protocol"] = fasting
+    if supplements and supplements != "None":
+        custom_fields["Supplements & Longevity Stack"] = supplements
 
     profile = UserProfile(
         birth_date=birth_date,
@@ -76,6 +85,8 @@ def run_cli_wizard() -> SavedState:
         sense_of_purpose=purpose,
         family_longevity=family,
         chronic_conditions=conditions,
+        personal_notes=notes if notes != "None provided" else "",
+        custom_fields=custom_fields,
     )
 
     print("\n⏳ Consulting Google Gemini Longevity Engine...")

@@ -123,6 +123,16 @@ class GeminiEngine:
         Returns:
             str: System and user combined instructions formatted for JSON output.
         """
+        custom_text = ""
+        if profile.custom_fields:
+            items = [f"- {k}: {v}" for k, v in profile.custom_fields.items() if str(v).strip()]
+            if items:
+                custom_text = "\n[CUSTOM ATTRIBUTES & BIOMARKERS]\n" + "\n".join(items) + "\n"
+
+        personal_text = ""
+        if profile.personal_notes and profile.personal_notes.strip():
+            personal_text = f"\n[PERSONAL DETAILS & UNIQUE LIFE CONTEXT]\n{profile.personal_notes.strip()}\n"
+
         return f"""You are an elite actuarial scientist, biogerontologist, and public health longevity modeler.
 Analyze the following subject profile to calculate their estimated biological life expectancy:
 
@@ -145,15 +155,16 @@ Analyze the following subject profile to calculate their estimated biological li
 - Sense of Purpose / Ikigai: {profile.sense_of_purpose}
 - Family Longevity History: {profile.family_longevity}
 - Chronic Medical Conditions: {profile.chronic_conditions}
-
+{custom_text}{personal_text}
 [TASK INSTRUCTIONS]
 1. Determine the baseline national actuarial life expectancy for this sex in this country.
 2. Calculate the net modifier in years based on the synergistic combination of their diet, exercise, sleep, environmental pollution, stress, social cohesion, and genetic factors.
-3. Compute the final predicted lifespan in years (e.g. 84.6).
-4. Provide a philosophical yet grounded scientific summary of their trajectory.
-5. Identify the top 3-4 life-extending longevity boosters with estimated years added (e.g. "Optimal Sleep Quality (+2.8 yrs)").
-6. Identify the top 2-3 risk dampeners with estimated years reduced (e.g. "Urban PM2.5 Pollution Exposure (-1.4 yrs)").
-7. Suggest 3-4 highest-leverage, practical interventions to expand their healthspan and lifespan.
+3. Crucially analyze and factor in all personal notes, unique lifestyle habits, biomarkers, and custom details provided above (e.g. fasting, cold plunges, sauna, high-impact stress, supplements, specific ancestral lifespans).
+4. Compute the final predicted lifespan in years (e.g. 84.6).
+5. Provide a philosophical yet grounded scientific summary of their trajectory referencing any notable personal context they shared.
+6. Identify the top 3-4 life-extending longevity boosters with estimated years added (e.g. "Optimal Sleep Quality (+2.8 yrs)").
+7. Identify the top 2-3 risk dampeners with estimated years reduced (e.g. "Urban PM2.5 Pollution Exposure (-1.4 yrs)").
+8. Suggest 3-4 highest-leverage, practical interventions to expand their healthspan and lifespan tailored to their personal situation.
 
 You MUST respond strictly with a valid JSON object matching this schema:
 {{

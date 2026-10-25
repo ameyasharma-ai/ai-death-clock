@@ -1,48 +1,56 @@
 {
   "profile": {
-    "birth_date": "2005-12-19",
+    "birth_date": "1998-05-15",
     "biological_sex": "Male",
     "country": "India",
-    "city": "Patna",
+    "city": "Pune",
     "living_area": "Urban",
-    "air_quality": "Moderate Urban",
-    "sleep_hours": 7.0,
+    "air_quality": "Moderate",
+    "sleep_hours": 7.5,
     "sleep_quality": "Moderate",
-    "exercise_frequency": "Light (1-2x per week)",
-    "diet_type": "Balanced Home-cooked (Whole foods)",
-    "smoking_status": "Non-smoker (Never smoked)",
-    "alcohol_units_per_week": 0,
-    "caffeine_daily_cups": 0,
+    "exercise_frequency": "Moderate (3-4x/wk)",
+    "diet_type": "Balanced Home-cooked",
+    "smoking_status": "Non-smoker",
+    "alcohol_units_per_week": 1,
+    "caffeine_daily_cups": 2,
     "stress_level": 5,
-    "work_nature": "Desk / Sedentary (Software / Office)",
-    "social_connection": "Strong Family & Lifelong Friends (Tight tribe)",
-    "sense_of_purpose": "High / Clear Life Mission & Passion (Ikigai)",
-    "family_longevity": "Exceptional (Parents/Grandparents lived 85+)",
-    "chronic_conditions": "None"
+    "work_nature": "Desk / Sedentary",
+    "social_connection": "Strong Family & Friends",
+    "sense_of_purpose": "High / Clear Mission",
+    "family_longevity": "Exceptional (85+)",
+    "chronic_conditions": "None",
+    "personal_notes": "Maternal grandmother lived to 99 with sharp memory. I do 16:8 intermittent fasting, practice Wim Hof cold showers 4x/week, take creatine and Vitamin D3 daily. Work as a software engineer with occasional high-stress product release sprints.",
+    "custom_fields": {
+      "Fasting Protocol": "16:8 Intermittent Fasting",
+      "Supplements & Longevity Stack": "Creatine 5g, Vitamin D3+K2 5000IU, Omega-3 2g",
+      "Biomarkers & Vital Metrics": "Resting HR: 52 bpm, BP: 116/76",
+      "Cold Exposure": "3-min cold shower 4x/wk"
+    }
   },
   "estimate": {
-    "estimated_lifespan_years": 85.2,
-    "estimated_death_date": "2091-03-02T03:51:50.400000+00:00",
-    "baseline_country_expectancy": 70.5,
-    "net_lifestyle_modifier_years": 14.7,
-    "summary": "The subject exhibits a robust longevity profile characterized by exceptional genetic resilience and strong psychosocial support systems. While urban environmental factors and sedentary work habits present moderate headwinds, the subject's adherence to a whole-food diet and absence of substance use place them in the top decile of their demographic cohort.",
+    "estimated_lifespan_years": 88.2,
+    "estimated_death_date": "2086-07-26T21:19:26.400000+00:00",
+    "baseline_country_expectancy": 71.0,
+    "net_lifestyle_modifier_years": 17.2,
+    "summary": "Your combination of exceptional genetic longevity, proactive metabolic interventions like 16:8 fasting, and strong social cohesion places you in the top decile of your demographic. While your sedentary software engineering role presents a risk, your low resting heart rate and disciplined supplement stack suggest a highly resilient biological age relative to your chronological age.",
     "top_boosters": [
       "Exceptional genetic longevity history (+6.5 yrs)",
-      "Strong social cohesion and Ikigai (+4.2 yrs)",
-      "Non-smoker and zero alcohol consumption (+3.5 yrs)",
-      "Balanced whole-food nutrition (+2.5 yrs)"
+      "Strong social cohesion and sense of purpose (+4.2 yrs)",
+      "Proactive metabolic health (16:8 fasting & supplements) (+3.5 yrs)",
+      "Consistent non-smoking and low alcohol intake (+3.0 yrs)"
     ],
     "top_risks": [
-      "Sedentary desk-bound occupation (-1.2 yrs)",
-      "Moderate urban air quality/PM2.5 exposure (-0.8 yrs)"
+      "Sedentary desk-bound work environment (-1.5 yrs)",
+      "Urban air quality exposure in Pune (-1.0 yrs)",
+      "Occasional high-stress product release cycles (-0.5 yrs)"
     ],
     "longevity_recommendations": [
-      "Implement a structured 150-minute weekly Zone 2 aerobic training regimen to counteract sedentary risks.",
-      "Utilize high-efficiency particulate air (HEPA) filtration in the primary living and sleeping quarters.",
-      "Incorporate 'movement snacks' or standing desk intervals every 60 minutes to mitigate metabolic stagnation.",
-      "Optimize sleep hygiene to transition from 7.0 hours of moderate quality to 7.5-8.0 hours of restorative sleep."
+      "Implement 'movement snacks' or standing desk intervals every 45 minutes to mitigate sedentary risks",
+      "Incorporate Zone 2 aerobic training to improve mitochondrial efficiency and offset desk-related cardiovascular stagnation",
+      "Utilize high-quality HEPA air filtration in your primary living and sleeping quarters to mitigate urban particulate matter",
+      "Formalize stress-recovery protocols post-sprint to prevent cumulative cortisol-driven systemic inflammation"
     ]
   },
-  "created_at": "2026-10-25T08:08:25.040897+00:00",
-  "updated_at": "2026-10-25T08:08:25.040954+00:00"
+  "created_at": "2026-10-25T08:15:17.943388+00:00",
+  "updated_at": "2026-10-25T08:15:17.943476+00:00"
 }

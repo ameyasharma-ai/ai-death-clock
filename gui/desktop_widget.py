@@ -187,6 +187,7 @@ class DesktopDeathClockWidget(QWidget):
 
         # Memento Mori Quote Box
         self.quote_box = QFrame()
+        self.quote_box.setMaximumHeight(75)
         self.quote_box.setStyleSheet(
             f"background-color: rgba(255, 255, 255, 0.04); border-radius: 8px; padding: 6px 10px;"
         )
@@ -208,20 +209,35 @@ class DesktopDeathClockWidget(QWidget):
 
         # Expandable AI Insights Section
         self.expandable_section = QWidget()
-        expand_layout = QVBoxLayout(self.expandable_section)
-        expand_layout.setContentsMargins(0, 8, 0, 0)
-        expand_layout.setSpacing(8)
+        self.expand_layout = QVBoxLayout(self.expandable_section)
+        self.expand_layout.setContentsMargins(0, 8, 0, 0)
+        self.expand_layout.setSpacing(8)
+
+        self._populate_expandable_section()
+
+        self.expandable_section.setVisible(False)
+        self.container_layout.addWidget(self.expandable_section)
+
+        self.root_layout.addWidget(self.container)
+
+    def _populate_expandable_section(self) -> None:
+        """Populate the expandable details drawer with current estimates and personal factors."""
+        # Clear existing layout items
+        while self.expand_layout.count():
+            child = self.expand_layout.takeAt(0)
+            if child.widget():
+                child.widget().deleteLater()
 
         # Divider
         divider = QFrame()
         divider.setFrameShape(QFrame.Shape.HLine)
         divider.setStyleSheet(f"color: {BORDER_GLASS};")
-        expand_layout.addWidget(divider)
+        self.expand_layout.addWidget(divider)
 
         # AI Longevity Heading
         longevity_head = QLabel("GEMINI AI LONGEVITY DECOMPOSITION")
         longevity_head.setStyleSheet(f"font-size: 10px; font-weight: 800; color: {ACCENT_CYAN}; letter-spacing: 1px;")
-        expand_layout.addWidget(longevity_head)
+        self.expand_layout.addWidget(longevity_head)
 
         # Actuarial comparison
         exp = self.state.estimate
@@ -231,43 +247,78 @@ class DesktopDeathClockWidget(QWidget):
             f"Net Modifier: {exp.net_lifestyle_modifier_years:+.1f} yrs"
         )
         act_info.setStyleSheet(f"font-size: 11px; font-weight: 600; color: {TEXT_PRIMARY};")
-        expand_layout.addWidget(act_info)
+        self.expand_layout.addWidget(act_info)
 
         # Boosters list
         if exp.top_boosters:
             b_label = QLabel("✦ Longevity Boosters:")
             b_label.setStyleSheet(f"font-size: 10px; font-weight: 700; color: {ACCENT_GREEN};")
-            expand_layout.addWidget(b_label)
+            self.expand_layout.addWidget(b_label)
             for b in exp.top_boosters:
                 item = QLabel(f"  • {b}")
                 item.setWordWrap(True)
                 item.setStyleSheet(f"font-size: 10px; color: {TEXT_SECONDARY};")
-                expand_layout.addWidget(item)
+                self.expand_layout.addWidget(item)
 
         # Risks list
         if exp.top_risks:
             r_label = QLabel("⚠ Risk Dampeners:")
             r_label.setStyleSheet(f"font-size: 10px; font-weight: 700; color: {ACCENT_AMBER};")
-            expand_layout.addWidget(r_label)
+            self.expand_layout.addWidget(r_label)
             for r in exp.top_risks:
                 item = QLabel(f"  • {r}")
                 item.setWordWrap(True)
                 item.setStyleSheet(f"font-size: 10px; color: {TEXT_SECONDARY};")
-                expand_layout.addWidget(item)
+                self.expand_layout.addWidget(item)
 
         # Actionable recommendations
         if exp.longevity_recommendations:
             rec_label = QLabel("⚡ Lifespan Expansion Protocol:")
             rec_label.setStyleSheet(f"font-size: 10px; font-weight: 700; color: {ACCENT_CYAN};")
-            expand_layout.addWidget(rec_label)
+            self.expand_layout.addWidget(rec_label)
             for rec in exp.longevity_recommendations:
                 item = QLabel(f"  ➜ {rec}")
                 item.setWordWrap(True)
                 item.setStyleSheet(f"font-size: 10px; color: #E0E7FF;")
-                expand_layout.addWidget(item)
+                self.expand_layout.addWidget(item)
 
-        self.expandable_section.setVisible(False)
-        self.container_layout.addWidget(self.expandable_section)
+        # Personal custom factors and notes indicator
+        prof = self.state.profile
+        if prof.personal_notes or prof.custom_fields:
+            pers_label = QLabel("✦ Personal Factors & Context Analyzed:")
+            pers_label.setStyleSheet(f"font-size: 10px; font-weight: 700; color: {ACCENT_ROSE};")
+            self.expand_layout.addWidget(pers_label)
+            if prof.custom_fields:
+                for k, v in prof.custom_fields.items():
+                    c_item = QLabel(f"  • {k}: {v}")
+                    c_item.setWordWrap(True)
+                    c_item.setStyleSheet(f"font-size: 10px; color: {TEXT_MUTED};")
+                    self.expand_layout.addWidget(c_item)
+            if prof.personal_notes:
+                preview = prof.personal_notes[:140] + ("..." if len(prof.personal_notes) > 140 else "")
+                p_item = QLabel(f"  ✎ \"{preview}\"")
+                p_item.setWordWrap(True)
+                p_item.setStyleSheet(f"font-size: 10px; font-style: italic; color: {TEXT_MUTED};")
+                self.expand_layout.addWidget(p_item)
+
+    def _toggle_expand(self) -> None:
+        """Toggle detailed AI insights visibility."""
+        self._is_expanded = not self._is_expanded
+        self.expandable_section.setVisible(self._is_expanded)
+        self.btn_toggle_expand.setText("▴" if self._is_expanded else "▾")
+        self.adjustSize()
+        self._save_geometry()
+
+    def update_state(self, new_state: SavedState) -> None:
+        """Update widget with a newly calculated state.
+
+        Args:
+            new_state: Updated SavedState instance.
+        """
+        self.state = new_state
+        self._populate_expandable_section()
+        self._update_clock()
+        self.adjustSize()
 
         self.root_layout.addWidget(self.container)
 

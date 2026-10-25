@@ -175,7 +175,7 @@ QLabel {{
     color: {TEXT_PRIMARY};
 }}
 
-QLineEdit, QComboBox, QDateEdit, QSpinBox, QDoubleSpinBox {{
+QLineEdit, QComboBox, QDateEdit, QSpinBox, QDoubleSpinBox, QTextEdit, QPlainTextEdit {{
     background-color: rgba(255, 255, 255, 0.06);
     border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 8px;
@@ -184,7 +184,7 @@ QLineEdit, QComboBox, QDateEdit, QSpinBox, QDoubleSpinBox {{
     font-size: 13px;
 }}
 
-QLineEdit:focus, QComboBox:focus, QDateEdit:focus, QSpinBox:focus {{
+QLineEdit:focus, QComboBox:focus, QDateEdit:focus, QSpinBox:focus, QTextEdit:focus, QPlainTextEdit:focus {{
     border: 1px solid {ACCENT_CYAN};
     background-color: rgba(0, 240, 255, 0.05);
 }}
