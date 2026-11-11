@@ -310,17 +310,29 @@ class DesktopDeathClockWidget(QWidget):
         self._save_geometry()
 
     def update_state(self, new_state: SavedState) -> None:
-        """Update widget with a newly calculated state.
+        """Update the widget with a newly calculated state.
 
         Args:
             new_state: Updated SavedState instance.
+
+        Returns:
+            None.
+
+        Raises:
+            None.
+
+        This method refreshes the expandable details section, updates the
+        countdown display, adjusts the widget size, and persists geometry.
         """
         self.state = new_state
+        # Refresh the expandable details section
         self._populate_expandable_section()
+        # Update the countdown display and gauge
         self._update_clock()
+        # Adjust widget size to fit new content
         self.adjustSize()
-
-        self.root_layout.addWidget(self.container)
+        # Persist geometry and expanded/top flags
+        self._save_geometry()
 
     def _update_clock(self) -> None:
         """Update live countdown metrics, gauge, and progress bar."""
@@ -358,24 +370,6 @@ class DesktopDeathClockWidget(QWidget):
         self.label_quote.setText(f'"{self._current_quote["quote"]}"')
         self.label_author.setText(f'— {self._current_quote["author"]}')
 
-    def _toggle_expand(self) -> None:
-        """Toggle detailed AI insights visibility."""
-        self._is_expanded = not self._is_expanded
-        self.expandable_section.setVisible(self._is_expanded)
-        self.btn_toggle_expand.setText("▴" if self._is_expanded else "▾")
-        self.adjustSize()
-        self._save_geometry()
-
-    def update_state(self, new_state: SavedState) -> None:
-        """Update widget with a newly calculated state.
-
-        Args:
-            new_state: Updated SavedState instance.
-        """
-        self.state = new_state
-        self._update_clock()
-        # Rebuild expandable section with new recommendations
-        # (Simply toggle and let next refresh display)
 
     # ─── Mouse Dragging & Screen Geometry Persistence ───────────────────────
     def mousePressEvent(self, event: QMouseEvent) -> None:
