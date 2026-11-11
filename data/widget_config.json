@@ -1,6 +1,8 @@
 {
-  "x": 1270,
-  "y": 10,
-  "is_expanded": true,
+  "x": 1281,
+  "y": 14,
+  "width": 533,
+  "height": 315,
+  "is_expanded": false,
   "always_on_top": false
 }
