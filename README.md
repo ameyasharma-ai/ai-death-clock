@@ -94,6 +94,48 @@ Or double-click the **AI Death Clock** icon directly on your desktop!
 
 ---
 
+## ⚙️ How to Edit or Reassess the Death Clock
+
+You can edit your lifespan predictions and profile data in two ways:
+
+### 1. Manual Profile Editing (Direct JSON)
+All profile attributes, lifestyle factors, and actuarial estimates are stored in:
+```
+data/profile.json
+```
+*(On Windows HUD setup: `C:\Users\Ameya Sharma\.countdown_widget\ai-death-clock\data\profile.json`)*
+
+Key configurable fields:
+- `birth_date`: ISO format date string (`"YYYY-MM-DD"`, e.g., `"2005-12-19"`).
+- `estimated_death_date`: ISO timestamp with timezone (`"2094-03-01T21:19:26.400000+00:00"`).
+- `estimated_lifespan_years`: Projected biological age (e.g., `88.2`).
+- `summary`: High-level phenotype summary shown in the widget.
+- `top_boosters` & `top_risks`: Key demographic factors modifying the lifespan.
+- `lifestyle`: `sleep_hours`, `exercise_frequency`, `smoking_status`, `stress_level`, and `personal_notes`.
+
+Any manual edits saved to `profile.json` take effect immediately on the next widget tick.
+
+### 2. Interactive Reassessment (Gemini Cloud Recalculation)
+To re-run the assessment wizard and have Gemini recalculate your actuarial lifespan with new lifestyle inputs:
+
+**Linux / macOS:**
+```bash
+./run.sh --setup
+```
+
+**Windows:**
+```powershell
+cd "C:\Users\Ameya Sharma\.countdown_widget\ai-death-clock"
+python main.py --setup
+```
+*(Or use `python main.py --cli` for the interactive terminal questionnaire).*
+
+### 3. Window Controls & Custom Placement
+- **Drag to Move**: Click and drag anywhere on the widget border/body to position it on your desktop. Coordinates automatically persist to `data/widget_config.json`.
+- **Dismiss / Close**: Click the subtle **`×`** in the header to close the widget.
+
+---
+
 ## ⚙️ Configuration & API Key
 
 The application reads your `GEMINI_API_KEY` from `/home/ameya/death-clock/.env` (cloned securely from `/home/ameya/robot/.env`).
